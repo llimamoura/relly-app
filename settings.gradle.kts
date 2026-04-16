@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Relly app"
 include(":app")
+includeBuild("build-logic")

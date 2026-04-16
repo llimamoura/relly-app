@@ -1,0 +1,4 @@
+package com.relly.app.presentation.navigation
+
+class Screen {
+}
