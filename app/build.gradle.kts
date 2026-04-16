@@ -3,7 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     id("relly.android.compose")
-    alias(libs.plugins.hilt.android)
+    id("relly.android.hilt")
     alias(libs.plugins.ksp)
 }
 
@@ -60,10 +60,6 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
 
     // Retrofit + OkHttp
     implementation(libs.retrofit)
