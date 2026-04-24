@@ -14,7 +14,7 @@ data class UserDto(
     val id: String,
     val name: String,
     val email: String,
-    val plan: UserPlan,
+    val plan: String,
     @Json(name = "trial_ends_at") val trialEndsAt: String?
 )
 
@@ -22,6 +22,6 @@ fun AuthResponseDto.toUser(): User = User(
     id = user.id,
     name = user.name,
     email = user.email,
-    plan = user.plan,
+    plan = runCatching { UserPlan.valueOf(user.plan.uppercase()) }.getOrDefault(UserPlan.TRIAL),
     trialEndsAt = user.trialEndsAt
 )
