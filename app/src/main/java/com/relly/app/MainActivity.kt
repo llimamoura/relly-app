@@ -3,7 +3,6 @@ package com.relly.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.relly.app.data.local.AuthManager
 import com.relly.app.presentation.navigation.AppNavHost
@@ -18,7 +17,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             RellyAppTheme {
                 val navController = rememberNavController()
