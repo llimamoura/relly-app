@@ -5,54 +5,41 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.relly.app.presentation.navigation.Screen
-import com.relly.app.presentation.viewModel.auth.LoginState
-import com.relly.app.presentation.viewModel.auth.LoginViewModel
+import com.relly.app.presentation.viewmodel.auth.LoginState
+import com.relly.app.presentation.viewmodel.auth.LoginViewModel
 
 @Composable
 fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val loginState = viewModel.loginState.collectAsState()
-    val state = loginState.value
+    val state by viewModel.loginState.collectAsStateWithLifecycle()
+    val email by viewModel.email.collectAsStateWithLifecycle()
+    val password by viewModel.password.collectAsStateWithLifecycle()
 
     when (state) {
-        is LoginState.Idle -> LoginForm(
-            onLogin = { email, password -> viewModel.login(email, password) },
+        is LoginState.Idle, is LoginState.Error -> LoginForm(
+            email = email,
+            password = password,
+            onEmailChange = viewModel::onEmailChange,
+            onPasswordChange = viewModel::onPasswordChange,
+            onLogin = viewModel::login,
             onNavigateToRegister = { navController.navigate(Screen.Register.route) },
+            errorMessage = (state as? LoginState.Error)?.message,
         )
-        is LoginState.Loading -> Box(
+        is LoginState.Loading, is LoginState.Success -> Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
-        is LoginState.Success -> {
-            LaunchedEffect(Unit) {
-                navController.navigate(Screen.MainGraph.route) {
-                    popUpTo(Screen.AuthGraph.route) { inclusive = true }
-                    launchSingleTop = true
-                }
-            }
-
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-            }
-        }
-        is LoginState.Error -> LoginForm(
-            onLogin = { email, password -> viewModel.login(email, password) },
-            onNavigateToRegister = { navController.navigate(Screen.Register.route) },
-            errorMessage = state.message,
-        )
     }
 }
+

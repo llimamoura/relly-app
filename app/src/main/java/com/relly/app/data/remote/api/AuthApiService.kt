@@ -1,11 +1,10 @@
-package com.relly.app.data.romete.api
+package com.relly.app.data.remote.api
 
-import com.relly.app.data.romete.dto.LoginDto
-import com.relly.app.data.romete.dto.RegisterDto
-import com.relly.app.data.romete.dto.auth.AuthResponseDto
+import com.relly.app.data.remote.dto.LoginDto
+import com.relly.app.data.remote.dto.RegisterDto
+import com.relly.app.data.remote.dto.auth.AuthResponseDto
 import retrofit2.http.Body
 import retrofit2.http.POST
-
 
 interface AuthApiService {
 

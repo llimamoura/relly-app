@@ -1,4 +1,4 @@
-package com.relly.app.data.romete.interceptor
+package com.relly.app.data.remote.interceptor
 
 import com.relly.app.data.local.AuthManager
 import okhttp3.Interceptor
@@ -6,8 +6,8 @@ import okhttp3.Response
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val authManager: AuthManager
-): Interceptor {
+    private val authManager: AuthManager,
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = authManager.getToken()
 

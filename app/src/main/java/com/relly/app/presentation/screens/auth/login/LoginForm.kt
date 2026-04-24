@@ -11,11 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -32,12 +29,14 @@ import com.relly.app.presentation.screens.components.RellyTextField
 
 @Composable
 fun LoginForm(
-    onLogin: (email: String, password: String) -> Unit = { _, _ -> },
-    onNavigateToRegister: () -> Unit = {},
+    email: String,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onLogin: () -> Unit,
+    onNavigateToRegister: () -> Unit,
     errorMessage: String? = null,
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -70,8 +69,8 @@ fun LoginForm(
             Column {
                 RellyTextField(
                     value = email,
-                    onValueChange = { email = it },
-                    placeholder =  "E-mail",
+                    onValueChange = onEmailChange,
+                    placeholder = "E-mail",
                     leadingIcon = Lucide.Mail,
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next,
@@ -79,16 +78,16 @@ fun LoginForm(
                     modifier = Modifier.fillMaxWidth(),
                 )
 
-                Spacer(modifier = Modifier.height(70.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 RellyTextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = onPasswordChange,
                     placeholder = "Senha",
                     leadingIcon = Lucide.LockKeyhole,
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done,
-                    onImeAction = { onLogin(email, password) },
+                    onImeAction = onLogin,
                     isPassword = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -103,12 +102,22 @@ fun LoginForm(
                 }
             }
 
-            MainButtonComponent(
-                text = "Entrar",
-                onClick = { onLogin(email, password) },
-                color = MaterialTheme.colorScheme.primary,
-                colorText = MaterialTheme.colorScheme.onPrimary,
-            )
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                MainButtonComponent(
+                    text = "Entrar",
+                    onClick = onLogin,
+                    color = MaterialTheme.colorScheme.primary,
+                    colorText = MaterialTheme.colorScheme.onPrimary,
+                )
+                TextButton(onClick = onNavigateToRegister) {
+                    Text(
+                        text = "Não tem conta? Criar conta",
+                        color = MaterialTheme.colorScheme.secondary,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            }
         }
     }
 }
+

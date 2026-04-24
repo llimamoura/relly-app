@@ -2,8 +2,8 @@ package com.relly.app.di
 
 import com.relly.app.BuildConfig
 import com.relly.app.data.local.AuthManager
-import com.relly.app.data.romete.api.AuthApiService
-import com.relly.app.data.romete.interceptor.AuthInterceptor
+import com.relly.app.data.remote.api.AuthApiService
+import com.relly.app.data.remote.interceptor.AuthInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

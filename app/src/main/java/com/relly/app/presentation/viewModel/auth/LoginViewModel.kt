@@ -1,8 +1,7 @@
-package com.relly.app.presentation.viewModel.auth
+package com.relly.app.presentation.viewmodel.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.relly.app.domain.model.User
 import com.relly.app.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,26 +12,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
 ) : ViewModel() {
+
+    private val _email = MutableStateFlow("")
+    val email: StateFlow<String> = _email.asStateFlow()
+
+    private val _password = MutableStateFlow("")
+    val password: StateFlow<String> = _password.asStateFlow()
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
 
-    fun login(email: String, password: String) {
+    fun onEmailChange(value: String) { _email.value = value }
+    fun onPasswordChange(value: String) { _password.value = value }
+
+    fun login() {
         viewModelScope.launch {
             _loginState.value = LoginState.Loading
-            loginUseCase(email, password).fold(
+            loginUseCase(_email.value, _password.value).fold(
                 onSuccess = { user -> _loginState.value = LoginState.Success(user) },
-                onFailure = { e -> _loginState.value = LoginState.Error(e.message ?: "Unknown error") }
+                onFailure = { e -> _loginState.value = LoginState.Error(e.message ?: "Erro inesperado") },
             )
         }
     }
-}
-
-sealed class LoginState {
-    object Idle : LoginState()
-    object Loading : LoginState()
-    data class Success(val user: User) : LoginState()
-    data class Error(val message: String) : LoginState()
 }

@@ -1,20 +1,23 @@
 package com.relly.app.data.repository
 
 import com.relly.app.data.local.AuthManager
-import com.relly.app.data.romete.api.AuthApiService
-import com.relly.app.data.romete.dto.LoginDto
-import com.relly.app.data.romete.dto.RegisterDto
-import com.relly.app.data.romete.dto.auth.toUser
+import com.relly.app.data.remote.api.AuthApiService
+import com.relly.app.data.remote.dto.LoginDto
+import com.relly.app.data.remote.dto.RegisterDto
+import com.relly.app.data.remote.dto.auth.toUser
 import com.relly.app.domain.model.User
 import com.relly.app.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.StateFlow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authApiService: AuthApiService,
-    private val authManager: AuthManager
+    private val authManager: AuthManager,
 ) : AuthRepository {
+
+    override val isLoggedInFlow: StateFlow<Boolean> = authManager.isLoggedInFlow
 
     override suspend fun login(email: String, password: String): Result<User> {
         return try {
