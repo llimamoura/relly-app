@@ -61,7 +61,7 @@ fun LoginForm(
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = "Acesse para acompanhar as finanças do seu grupo.",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.secondary,
                 )
             }
@@ -78,7 +78,7 @@ fun LoginForm(
                     modifier = Modifier.fillMaxWidth(),
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(70.dp))
 
                 RellyTextField(
                     value = password,
