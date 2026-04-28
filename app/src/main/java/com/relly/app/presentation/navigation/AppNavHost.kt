@@ -18,7 +18,6 @@ fun AppNavHost(
 ) {
     val startDestination = if (isLoggedIn) Screen.MainGraph.route else Screen.AuthGraph.route
 
-    // Reage a mudanças pós-composição inicial (ex: logout)
     val isFirstRender = remember { mutableStateOf(true) }
     LaunchedEffect(isLoggedIn) {
         if (isFirstRender.value) {
